@@ -122,11 +122,11 @@ numpy>=1.24.0
   - [x] Develop sliding-window generator with configurable window size and step.
   - [x] Implement segment probability extraction and risk tier mapping.
 
-- [ ] **Milestone 3: Streamlit Interface Assembly**
-  - Create file uploader and audio player.
-  - Implement caching for model initialization (`@st.cache_resource`).
-  - Integrate Plotly interactive Evidence Map.
-  - Display summary metrics and interval breakdown table.
+- [x] **Milestone 3: Streamlit Interface Assembly**
+  - [x] Create file uploader and audio player.
+  - [x] Implement caching for model initialization (`@st.cache_resource`).
+  - [x] Integrate Plotly interactive Evidence Map.
+  - [x] Display summary metrics and interval breakdown table.
 
 - [ ] **Milestone 4: Performance & Refinements**
   - Add progress tracking bar during multi-chunk evaluation.

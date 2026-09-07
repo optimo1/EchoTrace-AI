@@ -52,6 +52,7 @@ def analyse_slices(
     slices: Sequence[Slice],
     *,
     model: str = "Spectra0",
+    jj: Jabberjay.Jabberjay | None = None,
 ) -> list[Interval]:
     """Run detection on each slice and return scored intervals.
 
@@ -61,13 +62,18 @@ def analyse_slices(
         Slices produced by :func:`slicer.slice_audio`.
     model:
         Jabberjay model name.
+    jj:
+        Pre-initialised Jabberjay instance.  If *None* a new one is
+        created (useful outside Streamlit where ``@st.cache_resource``
+        is unavailable).
 
     Returns
     -------
     list[Interval]
         One interval per slice, ordered by start time.
     """
-    jj = Jabberjay.Jabberjay()
+    if jj is None:
+        jj = Jabberjay.Jabberjay()
     intervals: list[Interval] = []
 
     for s in slices:
