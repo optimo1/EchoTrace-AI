@@ -83,7 +83,7 @@ def analyse_slices(
 
     for i, s in enumerate(slices, 1):
         result = jj.detect(str(s.path), model=model)
-        score = result.confidence
+        score = 1.0 - result.confidence if result.is_bonafide else result.confidence
         tier = classify(score)
         intervals.append(
             Interval(start_sec=s.start_sec, end_sec=s.end_sec, score=score, tier=tier)
