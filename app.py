@@ -123,10 +123,21 @@ def main() -> None:
     st.markdown(f"**Duration:** {duration_sec:.1f}s &nbsp;|&nbsp; **Sample rate:** {sr} Hz")
 
     # ---- Slice & analyse ----
-    with st.spinner("Analysing audio (slicing + model inference)…"):
-        with tempfile.TemporaryDirectory() as td:
-            slices = slice_audio(audio, sr, output_dir=Path(td))
-            intervals = analyse_slices(slices, jj=_get_jabberjay())
+    with tempfile.TemporaryDirectory() as td:
+        slices = slice_audio(audio, sr, output_dir=Path(td))
+
+        progress_bar = st.progress(0, text="Analysing chunks…")
+        status_box = st.empty()
+
+        def _update_progress(current: int, total: int) -> None:
+            pct = current / total
+            progress_bar.progress(pct, text=f"Analysing chunk {current}/{total}")
+            status_box.caption(f"Processed {current} of {total} slices")
+
+        intervals = analyse_slices(slices, jj=_get_jabberjay(), on_progress=_update_progress)
+
+    progress_bar.empty()
+    status_box.empty()
 
     agg = aggregate_score(intervals)
     verdict = global_verdict(agg)

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Sequence
+from typing import Callable, Sequence
 
 import Jabberjay
 import numpy as np
@@ -53,6 +53,7 @@ def analyse_slices(
     *,
     model: str = "Spectra0",
     jj: Jabberjay.Jabberjay | None = None,
+    on_progress: Callable[[int, int], None] | None = None,
 ) -> list[Interval]:
     """Run detection on each slice and return scored intervals.
 
@@ -66,6 +67,9 @@ def analyse_slices(
         Pre-initialised Jabberjay instance.  If *None* a new one is
         created (useful outside Streamlit where ``@st.cache_resource``
         is unavailable).
+    on_progress:
+        Optional callback ``(current, total)`` invoked after each
+        slice is analysed.
 
     Returns
     -------
@@ -75,14 +79,17 @@ def analyse_slices(
     if jj is None:
         jj = Jabberjay.Jabberjay()
     intervals: list[Interval] = []
+    total = len(slices)
 
-    for s in slices:
+    for i, s in enumerate(slices, 1):
         result = jj.detect(str(s.path), model=model)
         score = result.confidence
         tier = classify(score)
         intervals.append(
             Interval(start_sec=s.start_sec, end_sec=s.end_sec, score=score, tier=tier)
         )
+        if on_progress is not None:
+            on_progress(i, total)
 
     return intervals
 

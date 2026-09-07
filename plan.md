@@ -128,6 +128,6 @@ numpy>=1.24.0
   - [x] Integrate Plotly interactive Evidence Map.
   - [x] Display summary metrics and interval breakdown table.
 
-- [ ] **Milestone 4: Performance & Refinements**
-  - Add progress tracking bar during multi-chunk evaluation.
-  - Ensure temporary files are cleaned up reliably after processing.
+- [x] **Milestone 4: Performance & Refinements**
+  - [x] Add progress tracking bar during multi-chunk evaluation.
+  - [x] Ensure temporary files are cleaned up reliably after processing.
