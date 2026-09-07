@@ -113,14 +113,14 @@ numpy>=1.24.0
 
 ## 6. Implementation Milestones
 
-- [ ] **Milestone 1: Environment Setup**
-  - Verify Python 3.11 environment.
-  - Install dependencies via `pip install -r requirements.txt`.
-  - Validate baseline Jabberjay model inference on a test audio file.
+- [x] **Milestone 1: Environment Setup**
+  - [x] Verify Python 3.11 environment.
+  - [x] Install dependencies via `pip install -r requirements.txt`.
+  - [x] Validate baseline Jabberjay model inference on a test audio file.
 
-- [ ] **Milestone 2: Slicing Pipeline Implementation**
-  - Develop sliding-window generator with configurable window size and step.
-  - Implement segment probability extraction and risk tier mapping.
+- [x] **Milestone 2: Slicing Pipeline Implementation**
+  - [x] Develop sliding-window generator with configurable window size and step.
+  - [x] Implement segment probability extraction and risk tier mapping.
 
 - [ ] **Milestone 3: Streamlit Interface Assembly**
   - Create file uploader and audio player.
