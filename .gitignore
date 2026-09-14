@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.env
+*.wav
+*.mp3
+*.m4a
+*.ogg
+.streamlit/secrets.toml

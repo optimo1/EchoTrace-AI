@@ -9,11 +9,12 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
+import librosa
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
+import soundfile as sf
 import streamlit as st
-from pydub import AudioSegment
 
 import Jabberjay
 from slicer import Slice, slice_audio
@@ -47,14 +48,16 @@ def _load_audio_as_mono_16k(uploaded_file) -> tuple[np.ndarray, int]:
         tmp_path = Path(tmp.name)
 
     try:
-        segment = AudioSegment.from_file(str(tmp_path))
-        segment = segment.set_frame_rate(TARGET_SAMPLE_RATE).set_channels(1)
-        samples = np.array(segment.get_array_of_samples(), dtype=np.float32)
-        samples /= np.iinfo(segment.array_type).max
-    finally:
-        tmp_path.unlink(missing_ok=True)
+        audio, orig_sr = sf.read(tmp_path, dtype="float32")
+        if audio.ndim > 1:
+            audio = audio.mean(axis=1)
+    except sf.LibsndfileError:
+        audio, orig_sr = librosa.load(str(tmp_path), sr=None, mono=True)
 
-    return samples, TARGET_SAMPLE_RATE
+    if orig_sr != TARGET_SAMPLE_RATE:
+        audio = librosa.resample(audio, orig_sr=orig_sr, target_sr=TARGET_SAMPLE_RATE)
+
+    return audio.astype(np.float32), TARGET_SAMPLE_RATE
 
 
 def _build_evidence_map(intervals: list[Interval], total_duration: float) -> go.Figure:
